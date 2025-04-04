@@ -1,0 +1,16 @@
+{
+  "name": "react-arco-design",
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-scripts": "^4.0.0",
+    "antd": "^5.24.6",
+    "@arco-design/web-react": "^2.66.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^4.0.0"
+  },
+  "main": "/index.tsx"
+}
