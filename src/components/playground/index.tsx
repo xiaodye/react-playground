@@ -8,7 +8,7 @@ import {
 } from '@codesandbox/sandpack-react';
 import { initFileList } from './template/initFileList';
 import { useState } from 'react';
-import SandEditor from '../components/editor';
+import SandEditor from '../editor';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import EditorFileTree from '@/components/editor-file-tree';
 
