@@ -1,6 +1,4 @@
-# React Playground
-
-This is a playground for React. It is a simple React app that uses the following technologies:
+# Mdx-Doc-Generator
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
