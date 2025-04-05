@@ -1,0 +1,28 @@
+# Hello MDX
+
+这是一个 MDX 文件示例。
+
+## 你可以在 Markdown 中使用 JSX
+
+<div style={{ padding: '1rem', backgroundColor: 'lavender' }}>
+  <h3>这是一个 JSX 块</h3>
+  <p>你可以在这里使用 React 组件</p>
+</div>
+
+## 导入和使用组件
+
+你也可以导入和使用 React 组件：
+
+import { useState } from 'react';
+
+export const Counter = () => {
+  const [count, setCount] = useState(0);
+  return (
+    <div>
+      <p>计数: {count}</p>
+      <button onClick={() => setCount(count + 1)}>增加</button>
+    </div>
+  );
+};
+
+<Counter />

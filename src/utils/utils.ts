@@ -11,13 +11,15 @@ export function getLanguageFromFileName(fileName: string): string {
     jsx: 'javascript',
 
     // TODO 待完善
-    ts: 'typescript',
-    tsx: 'typescript',
+    ts: 'javascript',
+    tsx: 'javascript',
 
     html: 'html',
     css: 'css',
     scss: 'scss',
     less: 'less',
+
+    mdx: 'markdown',
 
     // 配置文件
     json: 'json',

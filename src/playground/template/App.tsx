@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button, Space } from 'antd';
 import './App.css';
 import { ButtonGroup } from './components/ButtonGroup.tsx';
+// import ExampleMDX from './index.mdx';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -16,6 +17,7 @@ function App() {
         </Space>
         <hr />
         <ButtonGroup />
+        {/* <ExampleMDX /> */}
       </div>
     </>
   );

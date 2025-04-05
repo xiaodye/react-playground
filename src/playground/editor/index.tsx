@@ -1,7 +1,8 @@
 import Editor, { OnMount } from '@monaco-editor/react';
 import { useActiveCode, SandpackStack, FileTabs, useSandpack } from '@codesandbox/sandpack-react';
-import { CSSProperties } from 'react';
+import { CSSProperties, useEffect, useRef } from 'react';
 import { getLanguageFromFileName } from '@/utils/utils';
+import { createATA } from './ata';
 
 type Props = {
   className?: string;
@@ -11,6 +12,8 @@ type Props = {
 export default function SandEditor({ styles, className }: Props) {
   const { code, updateCode } = useActiveCode();
   const { sandpack } = useSandpack();
+
+  const ataRef = useRef<any>(null);
 
   // console.log('sandpack', sandpack);
 
@@ -25,18 +28,38 @@ export default function SandEditor({ styles, className }: Props) {
       jsx: monaco.languages.typescript.JsxEmit.Preserve,
       esModuleInterop: true,
     });
+
+    ataRef.current = createATA((code, path) => {
+      monaco.languages.typescript.typescriptDefaults.addExtraLib(code, `file://${path}`);
+    });
+
+    // editor.onDidChangeModelContent(() => {
+    //   ataRef.current(editor.getValue());
+    // });
+
+    // ataRef.current(editor.getValue());
   };
+
+  useEffect(() => {
+    if (sandpack.activeFile !== '/package.json') {
+      return;
+    }
+
+    // console.log('code', code);
+
+    ataRef.current(code);
+  }, [sandpack.activeFile, code]);
 
   return (
     <SandpackStack className={className} style={styles}>
-      <FileTabs closableTabs style={{ border: 0 }} />
+      <FileTabs style={{ border: 0 }} />
       <Editor
         width="100%"
         height="100%"
         language={getLanguageFromFileName(sandpack.activeFile)}
         theme="vs-light"
         key={sandpack.activeFile}
-        path={sandpack.activeFile}
+        path={sandpack.activeFile.split('/').pop()}
         value={code}
         onChange={(value) => updateCode(value || '')}
         onMount={handleEditorMount}
