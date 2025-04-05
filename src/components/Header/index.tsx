@@ -1,7 +1,7 @@
 import { Button, Space } from '@arco-design/web-react';
 import { AuroraText } from '../magicui/aurora-text';
 import reactLogo from '@/assets/react.svg';
-import { DownloadOutlined, ShareAltOutlined, SunOutlined } from '@ant-design/icons';
+import { DownloadOutlined, MoonOutlined, ShareAltOutlined, SunOutlined } from '@ant-design/icons';
 
 export default function Header() {
   return (
@@ -13,7 +13,7 @@ export default function Header() {
         </h1>
       </Space>
       <Space>
-        {/* <Button icon={<MoonOutlined />} onClick={() => setTheme("dark")} */}
+        <Button icon={<MoonOutlined />} />
         <Button icon={<SunOutlined />} />
         <Button icon={<ShareAltOutlined />} />
         <Button icon={<DownloadOutlined />} />

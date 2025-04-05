@@ -1,6 +1,6 @@
 import './App.css';
 import Header from './components/header';
-import Playground from './playground';
+import Playground from './components/playground';
 // import ExampleMDX from './example.mdx';
 
 function App() {
