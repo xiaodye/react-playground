@@ -52,7 +52,7 @@ export default function SandEditor({ styles, className }: Props) {
 
   return (
     <SandpackStack className={className} style={styles}>
-      <FileTabs style={{ border: 0 }} />
+      <FileTabs />
       <Editor
         width="100%"
         height="100%"
