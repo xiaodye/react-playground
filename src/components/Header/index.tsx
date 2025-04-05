@@ -9,7 +9,7 @@ export default function Header() {
       <Space>
         <img src={reactLogo} className="h-8 w-8" alt="" />
         <h1 className="text-2xl font-bold tracking-tighter">
-          <AuroraText>React Playground</AuroraText>
+          <AuroraText>MDX-Doc-Generator</AuroraText>
         </h1>
       </Space>
       <Space>

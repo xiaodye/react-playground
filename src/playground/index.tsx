@@ -8,7 +8,9 @@ import {
 } from '@codesandbox/sandpack-react';
 import { initFileList } from './template/initFileList';
 import { useState } from 'react';
-import SandEditor from './editor';
+import SandEditor from '../components/editor';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
+
 // import FileTree from './file-tree';
 
 export default function Playground() {
@@ -29,13 +31,20 @@ export default function Playground() {
           {/* <SandpackFileExplorer style={{ height: '100%' }} /> */}
           {/* <FileTree /> */}
           {/* <SandpackCodeEditor style={{ height: '100%' }} closableTabs showTabs /> */}
-          <SandEditor styles={{ height: '100%' }} />
-          <SandpackPreview
-            showOpenInCodeSandbox={true}
-            showRefreshButton
-            showRestartButton
-            style={{ height: '100%' }}
-          />
+          <ResizablePanelGroup direction="horizontal">
+            <ResizablePanel defaultSize={50} minSize={25}>
+              <SandEditor styles={{ height: '100%' }} />
+            </ResizablePanel>
+            <ResizableHandle withHandle />
+            <ResizablePanel defaultSize={50} minSize={25}>
+              <SandpackPreview
+                showOpenInCodeSandbox={true}
+                showRefreshButton
+                showRestartButton
+                style={{ height: '100%' }}
+              />
+            </ResizablePanel>
+          </ResizablePanelGroup>
         </SandpackLayout>
       </SandpackProvider>
     </div>
