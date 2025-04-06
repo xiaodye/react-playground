@@ -32,7 +32,7 @@ export default function Playground() {
 
           <ResizablePanelGroup direction="horizontal" className="flex">
             <ResizablePanel defaultSize={10} minSize={2}>
-              <EditorFileTree className="flex bg-background pt-2" />
+              <EditorFileTree className="flex bg-background pl-1 pt-2" />
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel defaultSize={50} minSize={30}>
