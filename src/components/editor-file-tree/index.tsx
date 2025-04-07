@@ -1,5 +1,6 @@
 import { File, Folder, Tree } from '@/components/magicui/file-tree';
-import { CSSProperties } from 'react';
+import { SandpackFiles, useSandpack } from '@codesandbox/sandpack-react';
+import { CSSProperties, ReactNode } from 'react';
 
 interface Props {
   className?: string;
@@ -7,93 +8,75 @@ interface Props {
 }
 
 export default function EditorFileTree({ className, styles }: Props) {
+  const { sandpack } = useSandpack();
+
+  // console.log('sandpack', sandpack.files);
+
+  /**
+   * 渲染文件树
+   * @param files
+   * @returns
+   */
+  const renderFileTree = (files: SandpackFiles): ReactNode[] => {
+    const fileList: ReactNode[] = [];
+
+    const genFileTree = (parts: string[]) => {
+      // if (parts.length === 0) {
+      //   return <></>;
+      // }
+
+      if (parts.length === 1) {
+        return (
+          <File key={parts[0]} value={parts[0]}>
+            {parts[0]}
+          </File>
+        );
+      } else {
+        const folder = parts.shift()!;
+
+        return (
+          <Folder key={folder} value={folder} element={folder}>
+            {genFileTree(parts)}
+          </Folder>
+        );
+      }
+    };
+
+    Object.keys(files)
+      .sort((a, b) => b.split('/').length - a.split('/').length)
+      .forEach((filePath, index) => {
+        const parts = filePath.split('/').filter(Boolean);
+
+        // 使用索引，避免顺序混乱
+        fileList[index] = genFileTree(parts);
+      });
+
+    return fileList;
+  };
+
   return (
     <Tree
       className={className}
       style={styles}
-      initialSelectedId="7"
-      initialExpandedItems={['2', '3', '4', '5', '6', '7', '8', '9', '10', '11']}
-      elements={ELEMENTS}
+      initialSelectedId="package.json"
+      initialExpandedItems={['public', 'components']}
     >
-      <Folder value="2" element="app">
-        <File value="3">
-          <p>layout.tsx</p>
-        </File>
-        <File value="4">
-          <p>page.tsx</p>
-        </File>
+      {/* <Folder value="2" element="app">
+        <File value="3">layout.tsx</File>
+        <File value="4">page.tsx</File>
       </Folder>
       <Folder value="5" element="components">
         <Folder value="6" element="ui">
-          <File value="7">
-            <p>button.tsx</p>
-          </File>
+          <File value="7">button.tsx</File>
         </Folder>
-        <File value="8">
-          <p>header.tsx</p>
-        </File>
-        <File value="9">
-          <p>footer.tsx</p>
-        </File>
+        <File value="8">header.tsx</File>
+        <File value="9">footer.tsx</File>
       </Folder>
-      <File value="12">
-        <p>package.json</p>
-      </File>
-      <File value="13">
-        <p>index.html</p>
-      </File>
-      <File value="14">
-        <p>tsconfig.json</p>
-      </File>
+      <File value="12">package.json</File>
+      <File value="13">index.html</File>
+      <File value="14">tsconfig.json</File> */}
+
+      {renderFileTree(sandpack.files)}
     </Tree>
   );
 }
-
-const ELEMENTS = [
-  {
-    id: '2',
-    isSelectable: true,
-    name: 'app',
-    children: [
-      {
-        id: '3',
-        isSelectable: true,
-        name: 'layout.tsx',
-      },
-      {
-        id: '4',
-        isSelectable: true,
-        name: 'page.tsx',
-      },
-    ],
-  },
-  {
-    id: '5',
-    isSelectable: true,
-    name: 'components',
-    children: [
-      {
-        id: '6',
-        isSelectable: true,
-        name: 'header.tsx',
-      },
-      {
-        id: '7',
-        isSelectable: true,
-        name: 'footer.tsx',
-      },
-    ],
-  },
-  {
-    id: '8',
-    isSelectable: true,
-    name: 'lib',
-    children: [
-      {
-        id: '9',
-        isSelectable: true,
-        name: 'utils.ts',
-      },
-    ],
-  },
-];

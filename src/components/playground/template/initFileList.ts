@@ -9,6 +9,9 @@ import ViteConfig from './vite.config.ts?raw';
 import ViteEnv from './vite-env.d.ts?raw';
 
 export const initFileList: SandpackFiles = {
+  'components/ButtonGroup.tsx': {
+    code: ButtonGroup,
+  },
   '/App.css': {
     code: AppCss,
   },
@@ -27,9 +30,6 @@ export const initFileList: SandpackFiles = {
   },
   '/vite-env.d.ts': {
     code: ViteEnv,
-  },
-  'components/ButtonGroup.tsx': {
-    code: ButtonGroup,
   },
   '/package.json': {
     code: packageJson,
