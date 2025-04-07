@@ -191,10 +191,14 @@ type FolderProps = {
   element: string;
   isSelectable?: boolean;
   isSelect?: boolean;
+  handleSelect?: () => void;
 } & FolderComponentProps;
 
 const Folder = forwardRef<HTMLDivElement, FolderProps & React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, element, value, isSelectable = true, isSelect, children, ...props }, ref) => {
+  (
+    { className, element, value, isSelectable = true, isSelect, children, handleSelect, ...props },
+    ref,
+  ) => {
     const {
       direction,
       handleExpand,
@@ -214,14 +218,24 @@ const Folder = forwardRef<HTMLDivElement, FolderProps & React.HTMLAttributes<HTM
             'cursor-not-allowed opacity-50': !isSelectable,
           })}
           disabled={!isSelectable}
-          onClick={() => handleExpand(value)}
+          onClick={() => {
+            handleExpand(value);
+            handleSelect?.();
+          }}
         >
-          {expandedItems?.includes(value)
-            ? (openIcon ?? <FolderOpenIcon className="size-4" />)
-            : (closeIcon ?? <FolderIcon className="size-4" />)}
-          <span>{element}</span>
+          <div
+            className={cn('flex items-center gap-x-1 rounded-sm pr-1', {
+              'bg-muted': isSelect,
+              'text-blue-400': isSelect,
+            })}
+          >
+            {expandedItems?.includes(value)
+              ? (openIcon ?? <FolderOpenIcon className="size-4" />)
+              : (closeIcon ?? <FolderIcon className="size-4" />)}
+            <span>{element}</span>
+          </div>
         </AccordionPrimitive.Trigger>
-        <AccordionPrimitive.Content className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down relative h-full overflow-hidden text-sm">
+        <AccordionPrimitive.Content className="relative h-full overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
           {element && indicator && <TreeIndicator aria-hidden="true" />}
           <AccordionPrimitive.Root
             dir={direction}
@@ -247,7 +261,7 @@ const File = forwardRef<
   HTMLButtonElement,
   {
     value: string;
-    handleSelect?: (id: string) => void;
+    handleSelect?: () => void;
     isSelectable?: boolean;
     isSelect?: boolean;
     fileIcon?: React.ReactNode;
@@ -259,25 +273,30 @@ const File = forwardRef<
   ) => {
     const { direction, selectedId, selectItem } = useTree();
     const isSelected = isSelect ?? selectedId === value;
+
     return (
       <button
         ref={ref}
         type="button"
         disabled={!isSelectable}
         className={cn(
-          'flex w-fit items-center gap-1 rounded-md pr-1 text-sm duration-200 ease-in-out rtl:pl-1 rtl:pr-0',
+          'flex w-fit items-center gap-1 rounded-sm pr-1 text-sm duration-200 ease-in-out rtl:pl-1 rtl:pr-0',
           {
             'bg-muted': isSelected && isSelectable,
+            'text-blue-400': isSelected && isSelectable,
           },
           isSelectable ? 'cursor-pointer' : 'cursor-not-allowed opacity-50',
           direction === 'rtl' ? 'rtl' : 'ltr',
           className,
         )}
-        onClick={() => selectItem(value)}
+        onClick={() => {
+          selectItem(value);
+          handleSelect?.();
+        }}
         {...props}
       >
         {fileIcon ?? <FileIcon className="size-4" />}
-        {children}
+        <div className="flex-1">{children}</div>
       </button>
     );
   },

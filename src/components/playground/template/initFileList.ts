@@ -12,6 +12,9 @@ export const initFileList: SandpackFiles = {
   'components/ButtonGroup.tsx': {
     code: ButtonGroup,
   },
+  'utils/dd/ButtonGroup.tsx': {
+    code: `const a = 1;`,
+  },
   '/App.css': {
     code: AppCss,
   },

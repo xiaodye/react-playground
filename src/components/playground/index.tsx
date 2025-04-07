@@ -11,6 +11,7 @@ import { useState } from 'react';
 import SandEditor from '../editor';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import EditorFileTree from '@/components/editor-file-tree';
+// import FileExplorer from '../file-explorer';
 
 export default function Playground() {
   const [fileList] = useState<SandpackFiles>(initFileList);
@@ -32,7 +33,8 @@ export default function Playground() {
 
           <ResizablePanelGroup direction="horizontal" className="flex">
             <ResizablePanel defaultSize={10} minSize={2}>
-              <EditorFileTree className="flex bg-background pl-1 pt-2" />
+              <EditorFileTree className="flex h-full bg-background" />
+              {/* <FileExplorer /> */}
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel defaultSize={50} minSize={30}>
