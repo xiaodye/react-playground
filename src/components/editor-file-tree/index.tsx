@@ -21,9 +21,9 @@ export default function EditorFileTree({ className, styles }: Props) {
     const fileList: ReactNode[] = [];
 
     const genFileTree = (parts: string[]) => {
-      // if (parts.length === 0) {
-      //   return <></>;
-      // }
+      if (parts.length === 0) {
+        return;
+      }
 
       if (parts.length === 1) {
         return (
