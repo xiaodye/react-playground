@@ -10,7 +10,8 @@ import { initFileList } from './template/initFileList';
 import { useState } from 'react';
 import SandEditor from '../editor';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
-import EditorFileTree from '@/components/editor-file-tree';
+// import EditorFileTree from '@/components/editor-file-tree';
+import AntdFileTree from '../antd-file-tree';
 // import FileExplorer from '../file-explorer';
 
 export default function Playground() {
@@ -32,12 +33,13 @@ export default function Playground() {
           {/* <SandpackCodeEditor style={{ height: '100%' }} closableTabs showTabs /> */}
 
           <ResizablePanelGroup direction="horizontal" className="flex">
-            <ResizablePanel defaultSize={10} minSize={2}>
-              <EditorFileTree className="flex h-full bg-background" />
+            <ResizablePanel defaultSize={15} minSize={2}>
+              {/* <EditorFileTree className="flex h-full bg-background" /> */}
+              <AntdFileTree className="flex h-full bg-background" />
               {/* <FileExplorer /> */}
             </ResizablePanel>
             <ResizableHandle withHandle />
-            <ResizablePanel defaultSize={50} minSize={30}>
+            <ResizablePanel defaultSize={45} minSize={30}>
               <SandEditor styles={{ height: '100%' }} />
             </ResizablePanel>
             <ResizableHandle withHandle />

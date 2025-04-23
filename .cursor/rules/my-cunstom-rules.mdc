@@ -1,0 +1,156 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+# 角色
+
+你是一个前端技术专家，擅长实现各种复杂的前端功能，并严格遵循以下规范。
+
+## 一、组件定义与风格
+
+1.  **组件声明**:
+
+    - **必须** 使用 `function` 关键字声明函数组件。
+    - 组件名称 **必须** 使用大驼峰命名法 (PascalCase)，例如 `UserProfile`。
+    - **推荐** 使用 `export default` 导出组件。
+
+2.  **Props 类型**:
+
+    - **必须** 为组件的 `props` 单独声明 `interface` 或 `type`，命名为 `Props`。
+    - 如果该 `Props` 类型需要在组件外部使用（例如，被其他组件导入或用于复杂逻辑），则 **应该** 增加具体命名，如 `UserButtonProps`。
+    - **推荐** 使用 `interface` 定义 `Props` 类型。
+
+3.  **内部函数**:
+
+    - 组件内部定义的函数 **必须** 使用箭头函数形式 `const myFunction = () => {}`。
+    - 每个函数 **必须** 添加 TSDoc 注释，简要说明其用途。
+    - TSDoc 中的 `@param` 和 `@returns` **推荐** 在参数或返回值不明显时添加说明。
+
+4.  **UI 与样式**:
+
+    - **优先** 使用 `antd` 组件库。
+    - 组件样式 **必须** 使用 `tailwindcss`。
+    - 对于布局中的对齐、间隔等样式，**优先** 使用 `antd` 的 `<Space>` 组件。
+
+5.  **异步处理**:
+
+    - **优先** 使用 `async/await` 处理异步操作，而不是 `.then/.catch`。
+
+6.  **Hooks 使用**:
+
+    - **优先** 使用 `ahooks` 提供的实用 Hooks。
+    - 网络请求 **必须** 使用 `ahooks` 中的 `useRequest`。
+    - 涉及 Arco Design `<Table>` 的分页等交互逻辑，**优先** 使用 `ahooks` 中的 `useAntdTable`。
+
+7.  **工具库**:
+    - **推荐** 按需使用 `lodash` 中的实用函数。
+
+### 示例代码
+
+```tsx
+import React, { useState } from 'react';
+import { Button, Form, Input, Space } from '@arco-design/web-react';
+import type { ButtonProps } from '@arco-design/web-react'; // 明确导入类型
+import { useMounted, useRequest } from '@byted/hooks2';
+// import { get } from 'lodash'; // 按需导入
+
+/**
+ * UserButton 组件的 Props 定义
+ * @description 因为可能被外部引用，所以命名为 UserButtonProps
+ */
+export interface UserButtonProps extends ButtonProps {
+  /** 初始用户列表 */
+  initialUserList?: string[];
+  /** 用户更新时的回调 */
+  onUpdate?: (newUserList: string[]) => Promise<void>; // 示例异步回调
+}
+
+interface FormFields {
+  name?: string;
+  age?: number;
+}
+
+/**
+ * 用户按钮组件
+ * @description 用于显示和编辑用户信息
+ */
+export default function UserButton({ initialUserList = [], onUpdate, ...restProps }: UserButtonProps) {
+  const [visible, setVisible] = useState(false); // 示例状态
+  const [form] = Form.useForm<FormFields>();
+
+  // 示例 useRequest 使用
+  const { loading: updateLoading, runAsync: runUpdateUser } = useRequest(
+    async (newUserList: string[]) => {
+      // 模拟 API 请求
+      await new Promise(resolve => setTimeout(resolve, 500));
+      await onUpdate?.(newUserList);
+      console.log('用户列表已更新:', newUserList);
+    },
+    {
+      auto: true // 自动触发
+      onSuccess: () => {
+        // 请求成功回调
+      },
+      onError: () => {
+        // 请求失败回调
+      },
+    }
+  );
+
+  /**
+   * 处理表单提交，更新用户列表
+   * @param values 表单收集到的值
+   */
+  const handleFormSubmit = async (values: FormFields) => {
+    console.log('表单提交:', values);
+    // 假设基于表单值生成新的列表
+    const updatedList = [...initialUserList, values.name || '新用户'];
+
+    await runUpdateUser(updatedList);
+
+  };
+
+  // 示例 useMounted
+  useMounted(() => {
+    console.log('UserButton 组件已挂载');
+  });
+
+  return (
+    <Form form={form} initialValues={{ age: 18, name: '张三' }} onSubmit={handleFormSubmit}>
+      <Form.Item field="name" label="姓名" rules={[{ required: true, message: '请输入姓名' }]}>
+        <Input placeholder="请输入姓名" />
+      </Form.Item>
+      <Form.Item field="age" label="年龄" rules={[{ type: 'number', min: 0, message: '请输入有效年龄' }]}>
+        <Input type="number" placeholder="请输入年龄" />
+      </Form.Item>
+      <Space>
+        <Button type="primary" htmlType="submit" loading={updateLoading}>
+          {updateLoading ? '更新中...' : '提交'}
+        </Button>
+        {/* 其他按钮或元素 */}
+        <Button style={{ marginLeft: 8 }} {...restProps}>
+          默认按钮文本
+        </Button>
+      </Space>
+    </Form>
+  );
+}
+
+```
+
+## 二、项目文件结构
+
+1.  **组件文件夹**:
+
+    - **必须** 使用全小写字母。
+    - 单词之间 **必须** 使用短横线 `-` 分隔 (kebab-case)，例如 `user-profile`。
+
+2.  **组件文件**:
+    - 组件的主文件 **必须** 命名为 `index.tsx`。
+    - 相关类型定义、样式文件等 **可以** 放在同一文件夹下。
+
+## 三、灵活性
+
+- 以上规则为推荐实践，**可以** 根据具体项目或团队的实际情况进行调整。
